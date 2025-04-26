@@ -1,20 +1,29 @@
 ﻿namespace DelegatesEvents;
 
 using System;
+using System.Threading;
+
+public class Timer {
+    public event Action Tick;
+
+    public void Start() {
+        for (int i = 0; i < 5; i++) {
+            Thread.Sleep(1000);
+            Tick?.Invoke();
+        }
+    }
+}
 
 public class Program {
-    public delegate int Operation(int i, int j);
-
-    public static int Add(int i, int j) => i + j;
-    public static int Multiply(int i, int j) => i * j;
-
+    
     static void Main() {
-        Operation op;
+        Timer timer = new Timer();
+        
+        timer.Tick += TimerOnTick;
+        timer.Start();
 
-        op = Add;
-        Console.WriteLine("Add: " + op(5, 3));
-
-        op = Multiply;
-        Console.WriteLine("Mul: " + op(15, 5));
+        void TimerOnTick() {
+            Console.WriteLine("idk");
+        }
     }
 }

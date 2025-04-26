@@ -1,17 +1,20 @@
-﻿using DelegatesEvents;
+﻿namespace DelegatesEvents;
+
 using System;
 
-Player player = new Player();
-Party party = new Party();
+public class Program {
+    public delegate int Operation(int i, int j);
 
-player.AchievementUnlocked += OnAchievementUnlocked;
-player.AchievementUnlocked += party.Cheering;
+    public static int Add(int i, int j) => i + j;
+    public static int Multiply(int i, int j) => i * j;
 
-await player.AddPoints(30);
-await player.AddPoints(40);
-await player.AddPoints(35);
+    static void Main() {
+        Operation op;
 
-player.AchievementUnlocked -= OnAchievementUnlocked;
-player.AchievementUnlocked -= party.Cheering;
+        op = Add;
+        Console.WriteLine("Add: " + op(5, 3));
 
-static void OnAchievementUnlocked(int points) => Console.WriteLine($"Congratulations! Achievement unlocked for {points}...");
+        op = Multiply;
+        Console.WriteLine("Mul: " + op(15, 5));
+    }
+}

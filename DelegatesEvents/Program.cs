@@ -4,12 +4,14 @@ using System;
 using System.Threading;
 
 public class Timer {
-    public event Action Tick;
+    public delegate void TickHandler(int second);
+    
+    public event TickHandler Tick;
 
     public void Start() {
         for (int i = 0; i < 5; i++) {
             Thread.Sleep(1000);
-            Tick?.Invoke();
+            Tick?.Invoke(i);
         }
     }
 }
@@ -22,8 +24,11 @@ public class Program {
         timer.Tick += TimerOnTick;
         timer.Start();
 
-        void TimerOnTick() {
-            Console.WriteLine("idk");
+        void TimerOnTick(int second) {
+            if (second % 2 == 0)
+                Console.WriteLine("suda");
+            else
+                Console.WriteLine("licha");
         }
     }
 }
